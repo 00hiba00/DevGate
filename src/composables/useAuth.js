@@ -1,6 +1,7 @@
+// src/composables/useAuth.js
 import { ref } from 'vue'
 import { auth, db } from '../firebase/firebase.js'
-import { doc, setDoc, updateDoc } from 'firebase/firestore'  
+import { doc, setDoc, updateDoc } from 'firebase/firestore'  // Import Firestore methods
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -18,6 +19,7 @@ onAuthStateChanged(auth, (u) => {
   currentUser.value = u
 })
 
+
 export function useAuth() {
     const router = useRouter();
     
@@ -28,13 +30,13 @@ export function useAuth() {
         const user = userCredential.user
 
         await setDoc(doc(db, 'users', user.uid), {
-            name: name,                  
-            email: email,       
+            name: name,                  // User name
+            email: email,       // User email
             photoURL: '',
-            status:true,       
+            status:true,       // Add default photo or leave it empty
           })
           console.log('User successfully registered and added to Firestore.')
-          router.push('/Profile')
+          router.push('/Principale')
     } catch (err) {
       error.value = err.message
       console.error("Firebase Error:", err.code, err.message)
@@ -52,7 +54,7 @@ export function useAuth() {
         status: true
       });
   
-      router.push('/Profile')
+      router.push('/Principale')
     } catch (err) {
       alert("mot de passe ou email incorrect")
       error.value = err.message
@@ -62,6 +64,7 @@ export function useAuth() {
   
 
   const logout = async () => {
+    // Update status BEFORE signing out
     const user = auth.currentUser
     if (user) {
         const userRef = doc(db, 'users', user.uid)
@@ -89,6 +92,6 @@ export function useAuth() {
     logout,
     resetPassword,
     error,
-    user: currentUser  
+    user: currentUser  // 👈 ajoute ceci
   }
 }
