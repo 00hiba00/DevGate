@@ -6,12 +6,23 @@
         <input v-model="title" type="text" placeholder="Titre du projet" required class="input" />
         <textarea v-model="description" placeholder="Description du projet" required class="textarea" />
         <input v-model="github" type="url" placeholder="Lien GitHub" class="input" />
-
+  
         <label class="label">Stack utilisée :</label>
         <div class="flex flex-wrap gap-2">
           <label v-for="tech in techList" :key="tech" class="flex items-center gap-1">
             <input type="checkbox" :value="tech" v-model="stack" />
             {{ tech }}
+          </label>
+        </div>
+  
+        <!-- New Visibility Section -->
+        <label class="label">Visibilité du projet :</label>
+        <div class="flex gap-4">
+          <label>
+            <input type="radio" v-model="visibility" value="public" /> Public
+          </label>
+          <label>
+            <input type="radio" v-model="visibility" value="private" /> Privé
           </label>
         </div>
   
@@ -29,7 +40,8 @@
     addProjectToFirestore,
     updateProjectInFirestore
   } from '@/composables/useFirestore'
-  
+  import { getProjects } from '@/composables/useFirestore';  // Adjust the path if needed
+
   const props = defineProps({
     initialProject: Object
   })
@@ -39,6 +51,7 @@
   const description = ref('')
   const github = ref('')
   const stack = ref([])
+  const visibility = ref('public')  // Default visibility to "public"
   const techList = ['Vue.js', 'React', 'Node.js', 'Firebase', 'Python', 'Laravel']
   
   const isEditMode = computed(() => !!props.initialProject)
@@ -51,27 +64,45 @@
         description.value = project.description || ''
         github.value = project.github || ''
         stack.value = project.stack || []
+        visibility.value = project.visibility || 'public' // Set visibility based on existing data
       }
     },
     { immediate: true }
   )
   
   const submitProject = async () => {
-    const payload = {
-      title: title.value,
-      description: description.value,
-      github: github.value,
-      stack: stack.value
-    }
-  
-    if (isEditMode.value) {
-      await updateProjectInFirestore(props.initialProject.id, payload)
-    } else {
-      await addProjectToFirestore({ ...payload, createdAt: new Date() })
-    }
-  
-    emit('project-saved')
+  // Validation for empty fields
+  if (!title.value || !description.value || !github.value || stack.value.length === 0) {
+    alert("Tous les champs doivent être remplis.");
+    return;
   }
+
+  // Check if the project title already exists
+  const existingProjects = await getProjects();  // Function to fetch all projects
+  const isTitleTaken = existingProjects.some(project => project.title.toLowerCase() === title.value.toLowerCase());
+  
+  if (isTitleTaken) {
+    alert("Ce projet existe déjà. Veuillez choisir un autre titre.");
+    return;
+  }
+
+  const payload = {
+    title: title.value,
+    description: description.value,
+    github: github.value,
+    stack: stack.value,
+    visibility: visibility.value // If you added the visibility logic
+  };
+
+  if (isEditMode.value) {
+    await updateProjectInFirestore(props.initialProject.id, payload);
+  } else {
+    await addProjectToFirestore({ ...payload, createdAt: new Date() });
+  }
+
+  emit('project-saved');
+};
+
   </script>
   
   <style scoped>
@@ -103,7 +134,8 @@
     margin-bottom: 1rem;
   }
   
-  .input, .textarea {
+  .input,
+  .textarea {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid #ddd;
@@ -143,6 +175,14 @@
     margin-top: 1rem;
     display: flex;
     justify-content: flex-end;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .gap-4 {
+    gap: 1rem;
   }
   </style>
   

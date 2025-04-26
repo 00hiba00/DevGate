@@ -1,14 +1,26 @@
 import { db } from '@/firebase/firebase.js'
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 
+// Ajouter un projet à Firestore
 export const addProjectToFirestore = async (project) => {
-  try {
-    const docRef = await addDoc(collection(db, 'projects'), project)
-    console.log('Document ajouté avec l\'ID : ', docRef.id)
-  } catch (e) {
-    console.error('Erreur lors de l\'ajout du projet : ', e)
+    try {
+      const docRef = await addDoc(collection(db, 'projects'), project)
+      console.log('Document ajouté avec l\'ID : ', docRef.id)
+    } catch (e) {
+      console.error('Erreur lors de l\'ajout du projet : ', e)
+    }
   }
-}
+  
+  export const updateProjectInFirestore = async (id, updatedProject) => {
+    try {
+      const docRef = doc(db, 'projects', id)
+      await updateDoc(docRef, updatedProject)
+      console.log('Projet mis à jour avec succès : ', id)
+    } catch (e) {
+      console.error('Erreur lors de la mise à jour : ', e)
+    }
+  }
+  
 
 // Récupérer tous les projets depuis Firestore
 export const getProjects = async () => {
@@ -19,6 +31,7 @@ export const getProjects = async () => {
   })
   return projects
 }
+
 
 // Supprimer un projet depuis Firestore
 export const deleteProjectFromFirestore = async (id) => {
@@ -32,26 +45,15 @@ export const deleteProjectFromFirestore = async (id) => {
 }
 import { updateDoc } from 'firebase/firestore'
 
-export const updateProjectInFirestore = async (id, updatedProject) => {
-  try {
-    const docRef = doc(db, 'projects', id)
-    await updateDoc(docRef, updatedProject)
-    console.log('Projet mis à jour avec succès : ', id)
-  } catch (e) {
-    console.error('Erreur lors de la mise à jour : ', e)
-  }
-}
 
 // Fonction pour récupérer les compétences
 export const getCompetences = async () => {
-    try {
-      const competencesSnapshot = await getDocs(collection(db, "competences"));
-      const competencesList = competencesSnapshot.docs.map(doc => doc.data());
-      return competencesList;
-    } catch (error) {
-      console.error("Error getting competences: ", error);
-      return [];
-    }
+    const snapshot = await getDocs(collection(db, "competences"))
+    const competences = snapshot.docs.map(doc => ({
+      id: doc.id,         // 👈 récupérer l'id du document Firestore
+      ...doc.data()        // 👈 récupérer les données
+    }))
+    return competences
   };
   // Fonction pour ajouter une compétence
 export const addCompetenceToFirestore = async (competence) => {
@@ -63,6 +65,7 @@ export const addCompetenceToFirestore = async (competence) => {
     }
   };
   
+  
   // Fonction pour modifier une compétence
   export const updateCompetenceInFirestore = async (id, competence) => {
     try {
@@ -73,6 +76,14 @@ export const addCompetenceToFirestore = async (competence) => {
       console.error("Erreur lors de la mise à jour de la compétence : ", error);
     }
   };
+
+
+  export const deleteCompetenceFromFirestore = async (id) => {
+  const docRef = doc(db, 'competences', id)
+  await deleteDoc(docRef)
+}
+
+
 
   // Ajouter un projet à Firestore
 export const addObjectifToFirestore = async (objectif) => {

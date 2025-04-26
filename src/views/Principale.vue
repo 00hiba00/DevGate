@@ -8,15 +8,15 @@
         @close="closeProjectForm"
       />
       
-      <!-- Affichage du formulaire dans une fenêtre modale (ajout ou modification d'une compétence) -->
+      <!-- Modale pour les compétences -->
+    <div v-if="isEditingCompetence || isAddingCompetence" class="modal-overlay">
       <CompetenceForm 
-        v-if="isEditingCompetence || isAddingCompetence" 
         :initialCompetence="currentCompetence" 
         @competence-saved="fetchCompetencesAndCloseForm" 
         @close="closeCompetenceForm"
       />
-
-      <ObjectifForm 
+    </div>
+    <ObjectifForm 
         v-if="isEditingObjectif || isAddingObjectif" 
         :initialObjectif="currentObjectif" 
         @objectif-saved="fetchObjectifsAndCloseForm" 
@@ -51,7 +51,6 @@
         @delete="deleteCompetence"
         @edit="editCompetence"
       />
-
       <button @click="startAddingObjectif" class="btn">
         Ajouter un objectif
       </button>
@@ -63,7 +62,6 @@
         @delete="deleteObjectif"
         @edit="editObjectif"
       />
-
     </div>
   </template>
   
@@ -78,7 +76,6 @@
   import ObjectifForm from '@/components/ObjectifForm.vue'
   import ObjectifList from '@/components/ObjectifList.vue'
 
-  
   const projects = ref([])
   const competences = ref([]) // Liste des compétences
   const objectifs = ref([])
@@ -100,11 +97,9 @@
   const fetchCompetences = async () => {
     competences.value = await getCompetences()
   }
-
   const fetchObjectifs = async () => {
     objectifs.value = await getObjectifs()
   }
-  
   const fetchProjectsAndCloseForm = async () => {
     await fetchProjects()
     closeProjectForm() // Ferme le formulaire après l'ajout ou la modification d'un projet
@@ -114,23 +109,21 @@
     await fetchCompetences()
     closeCompetenceForm() // Ferme le formulaire après l'ajout ou la modification d'une compétence
   }
-
   const fetchObjectifsAndCloseForm = async () => {
     await fetchObjectifs()
     closeObjectifForm() // Ferme le formulaire après l'ajout ou la modification d'un projet
   }
-  
   const deleteProject = async (id) => {
     await deleteProjectFromFirestore(id)
     await fetchProjects()
   }
   
   const deleteCompetence = async (id) => {
-    await deleteCompetenceFromFirestore(id)
-    await fetchCompetences()
-  }
-
-  const deleteObjectif = async (id) => {
+  console.log('ID reçu pour suppression:', id)
+  await deleteCompetenceFromFirestore(id)
+  await fetchCompetences()
+}
+const deleteObjectif = async (id) => {
     await deleteObjectifFromFirestore(id)
     await fetchObjectifs()
   }
@@ -142,12 +135,12 @@
   }
   
   const editCompetence = (competence) => {
-    currentCompetence.value = competence
-    isEditingCompetence.value = true
-    isAddingCompetence.value = false
-  }
-
-  const editObjectif = (objectif) => {
+  console.log('Je veux éditer cette compétence:', competence) // 🧠 ici
+  currentCompetence.value = competence
+  isEditingCompetence.value = true
+  isAddingCompetence.value = false
+}
+const editObjectif = (objectif) => {
     currentObjectif.value = objectif
     isEditingObjectif.value = true
     isAddingObjectif.value = false
@@ -164,13 +157,11 @@
     isEditingCompetence.value = false
     currentCompetence.value = null // Réinitialiser les données de la compétence
   }
-
   const startAddingObjectif = () => {
     isAddingObjectif.value = true
     isEditingObjectif.value = false
     currentObjectif.value = null // Réinitialiser les données du projet
   }
-  
   const closeProjectForm = () => {
     isEditingProject.value = false
     isAddingProject.value = false
@@ -182,7 +173,6 @@
     isAddingCompetence.value = false
     currentCompetence.value = null
   }
-
   const closeObjectifForm = () => {
     isEditingObjectif.value = false
     isAddingObjectif.value = false
@@ -255,5 +245,17 @@
   .btn:hover {
     background-color: #36976f;
   }
+  .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
   </style>
   

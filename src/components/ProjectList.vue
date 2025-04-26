@@ -1,11 +1,13 @@
 <template>
     <div :class="['project-list', viewMode]">
-      <div
-        v-for="project in projects"
-        :key="project.id"
-        class="project-card"
-      >
-        <h3 class="font-bold text-lg">{{ project.title }}</h3>
+      <div v-for="project in projects" :key="project.id" class="project-card">
+        <div class="project-header">
+          <h3 class="font-bold text-lg">{{ project.title }}</h3>
+          <!-- Display badge for visibility -->
+          <span :class="['visibility-badge', project.visibility]">
+            {{ project.visibility === 'public' ? 'Public' : 'Privé' }}
+          </span>
+        </div>
         <p>{{ project.description }}</p>
         <p><strong>Stack :</strong> {{ project.stack.join(', ') }}</p>
         <a :href="project.github" target="_blank" class="text-blue-500 underline">
@@ -44,6 +46,30 @@
   
   .project-card:hover {
     transform: translateY(-5px);
+  }
+  
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .visibility-badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+  
+  .visibility-badge.public {
+    background-color: #42b983;
+    color: white;
+  }
+  
+  .visibility-badge.private {
+    background-color: #e74c3c;
+    color: white;
   }
   
   .project-card button {
