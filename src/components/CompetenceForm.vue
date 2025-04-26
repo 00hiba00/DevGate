@@ -26,58 +26,66 @@
   </template>
   
   <script setup>
-  import { ref, watch } from 'vue';
-  import { addCompetenceToFirestore, updateCompetenceInFirestore } from '@/composables/useFirestore';
-  
-  const props = defineProps({
-    initialCompetence: Object,
-  });
-  
-  const emit = defineEmits(['competence-saved', 'close']);
-  
-  const name = ref(props.initialCompetence ? props.initialCompetence.name : '');
-  const level = ref(props.initialCompetence ? props.initialCompetence.level : '');
-  const acquisitionDate = ref(props.initialCompetence ? props.initialCompetence.acquisitionDate : '');
-  const progressionDate = ref(props.initialCompetence ? props.initialCompetence.progressionDate : '');
+import { ref, watch } from 'vue';
+import { addCompetenceToFirestore, updateCompetenceInFirestore } from '@/composables/useFirestore';
+import { getAuth } from 'firebase/auth'; // <-- import Firebase Auth
 
-  watch(
-    () => props.initialCompetence,
-    (competence) => {
-      if (competence) {
-        name.value = competence.name || '';
-        level.value = competence.level || '';
-        acquisitionDate.value = competence.acquisitionDate || '';
-        progressionDate.value = competence.progressionDate || '';
+const props = defineProps({
+  initialCompetence: Object,
+});
 
-      }
-    },
-    { immediate: true }
-  );
-  
-  const submitCompetence = async () => {
-    const payload = {
-      name: name.value,
-      level: level.value,
-      acquisitionDate: acquisitionDate.value,
-      progressionDate: progressionDate.value
+const emit = defineEmits(['competence-saved', 'close']);
 
-    };
-  
-    if (props.initialCompetence) {
-      await updateCompetenceInFirestore(props.initialCompetence.id, payload);
-    } else {
-      await addCompetenceToFirestore(payload);
+const name = ref(props.initialCompetence ? props.initialCompetence.name : '');
+const level = ref(props.initialCompetence ? props.initialCompetence.level : '');
+const acquisitionDate = ref(props.initialCompetence ? props.initialCompetence.acquisitionDate : '');
+const progressionDate = ref(props.initialCompetence ? props.initialCompetence.progressionDate : '');
+
+watch(
+  () => props.initialCompetence,
+  (competence) => {
+    if (competence) {
+      name.value = competence.name || '';
+      level.value = competence.level || '';
+      acquisitionDate.value = competence.acquisitionDate || '';
+      progressionDate.value = competence.progressionDate || '';
     }
-    
-    emit('competence-saved');
-    emit('close');
+  },
+  { immediate: true }
+);
+
+const submitCompetence = async () => {
+  const payload = {
+    name: name.value,
+    level: level.value,
+    acquisitionDate: acquisitionDate.value,
+    progressionDate: progressionDate.value,
   };
+
+  if (props.initialCompetence) {
+    await updateCompetenceInFirestore(props.initialCompetence.id, payload);
+  } else {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("Utilisateur non connecté");
+      return;
+    }
+    await addCompetenceToFirestore({
+      ...payload,
+      userId: user.uid   // <-- ajouter userId lors de l'ajout
+    });
+  }
   
-  const cancel = () => {
-    emit('close');
-  };
-  </script>
-  
+  emit('competence-saved');
+  emit('close');
+};
+
+const cancel = () => {
+  emit('close');
+};
+</script>
+
   <style scoped>
   .overlay {
     position: fixed;

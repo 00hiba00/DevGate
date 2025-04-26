@@ -21,16 +21,27 @@ export const addProjectToFirestore = async (project) => {
     }
   }
   
+  import { getAuth } from 'firebase/auth'
+  import { query, where } from 'firebase/firestore'
 
 // Récupérer tous les projets depuis Firestore
 export const getProjects = async () => {
-  const querySnapshot = await getDocs(collection(db, 'projects'))
-  const projects = []
-  querySnapshot.forEach((doc) => {
-    projects.push({ id: doc.id, ...doc.data() })
-  })
-  return projects
-}
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) throw new Error('Utilisateur non connecté.');
+  
+    const q = query(
+      collection(db, 'projects'),
+      where('userId', '==', user.uid)  // <-- Filtrer par userId
+    )
+  
+    const querySnapshot = await getDocs(q)
+    const projects = []
+    querySnapshot.forEach((doc) => {
+      projects.push({ id: doc.id, ...doc.data() })
+    })
+    return projects
+  }
 
 
 // Supprimer un projet depuis Firestore
@@ -47,14 +58,27 @@ import { updateDoc } from 'firebase/firestore'
 
 
 // Fonction pour récupérer les compétences
+
 export const getCompetences = async () => {
-    const snapshot = await getDocs(collection(db, "competences"))
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (!user) throw new Error('Utilisateur non connecté.');
+  
+    const q = query(
+      collection(db, "competences"), // ta collection Firestore
+      where('userId', '==', user.uid) // 👈 filtre seulement les compétences de CE user
+    );
+  
+    const snapshot = await getDocs(q);
+  
     const competences = snapshot.docs.map(doc => ({
-      id: doc.id,         // 👈 récupérer l'id du document Firestore
-      ...doc.data()        // 👈 récupérer les données
-    }))
-    return competences
-  };
+      id: doc.id,
+      ...doc.data()
+    }));
+  
+    return competences;
+  }
   // Fonction pour ajouter une compétence
 export const addCompetenceToFirestore = async (competence) => {
     try {
@@ -96,14 +120,29 @@ export const addObjectifToFirestore = async (objectif) => {
 }
 
 // Récupérer tous les projets depuis Firestore
+
 export const getObjectifs = async () => {
-  const querySnapshot = await getDocs(collection(db, 'objectifs'))
-  const objectifs = []
+  // Get the current user
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) throw new Error('Utilisateur non connecté.');
+
+  // Create a query to get objectifs for the logged-in user
+  const q = query(
+    collection(db, 'objectifs'),
+    where('userId', '==', user.uid)  // Filter by userId
+  );
+
+  const querySnapshot = await getDocs(q);
+  const objectifs = [];
+  
   querySnapshot.forEach((doc) => {
-    objectifs.push({ id: doc.id, ...doc.data() })
-  })
-  return objectifs
-}
+    objectifs.push({ id: doc.id, ...doc.data() });
+  });
+  
+  return objectifs;
+};
 
 // Supprimer un projet depuis Firestore
 export const deleteObjectifFromFirestore = async (id) => {

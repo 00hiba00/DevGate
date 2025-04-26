@@ -1,114 +1,90 @@
 <template>
-  <div class="user-list-container">
-    
-    <b-input-group class="search-bar">
-      <b-form-input 
-        v-model="searchQuery" 
-        placeholder="Rechercher un utilisateur..." 
-      />
-    </b-input-group>
-
-    <div v-if="users.length === 0" class="empty-state">
-      <b-alert show variant="info">Aucun utilisateur trouvé.</b-alert>
-    </div>
-
-    <div v-else class="user-grid">
-      <UserItem 
-        v-for="user in filteredUsers" 
-        :key="user.id" 
-        :user="user" 
-      />
-    </div>
-  </div>
+    <b-card class="user-card">
+      <b-card-header>
+        <h5>{{ user.name }}</h5>
+      </b-card-header>
+      <b-card-body>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <span class="status-indicator" :class="{ online: user.status, offline: !user.status }"></span>
+        <b-button @click="viewProfile" variant="outline-primary">View Profile</b-button>
+      </b-card-body>
+    </b-card>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import UserItem from './UserItem.vue';
-import { db } from '../firebase/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
 
-const searchQuery = ref('');
-const users = ref([]);
-
-const filteredUsers = computed(() => {
-  let filtered = users.value;
-
-  if (searchQuery.value) {
-    filtered = filtered.filter(d =>
-      d.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      (d.email.toLowerCase().includes(searchQuery.value.toLowerCase()))
-    );
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
   }
-
-  return filtered;
 });
 
-const fetchUsers = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "users"));
-    users.value = querySnapshot.docs.map(doc => 
-      ({uid: doc.id, ...doc.data()})
-    );
-  } catch (error) {
-    console.error("Error fetching users: ", error);
-  }
+const router = useRouter();
+
+const viewProfile = () => {
+  router.push({ name: 'Profile', params: { userId: props.user.uid } });
 };
-
-onMounted(() => {
-  fetchUsers();
-});
 </script>
 <style scoped>
-.user-list-container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1.5rem;
+.user-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
   background-color: #f9f9fb;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.search-bar {
-  margin-bottom: 2rem;
+.b-card-header {
+  background-color: #f1f3f5;
+  border-bottom: 2px solid #e9ecef;
+  padding: 1rem;
+  border-radius: 10px 10px 0 0;
 }
 
-.b-input-group {
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 2rem;
-  color: #6c757d;
-}
-
-.user-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+.b-card-header h5 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
 }
 
 .b-button {
-  margin-bottom: 1.5rem;
-  padding: 0.75rem 2rem;
-  background: #007bff;
-  border: none;
-  color: white;
+  margin-top: 1rem;
+  padding: 0.6rem 1.5rem;
   border-radius: 50px;
   font-weight: 600;
-  transition: background-color 0.3s;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .b-button:hover {
-  background: #0056b3;
+  background-color: #0069d9;
+  transform: scale(1.05);
 }
 
-.b-alert {
-  border-radius: 8px;
-  font-size: 1.1rem;
-  padding: 1.25rem;
-  margin-top: 1rem;
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 12px;
+}
+
+.status-indicator.online {
+  background-color: #28a745;
+}
+
+.status-indicator.offline {
+  background-color: #dc3545;
 }
 </style>

@@ -15,7 +15,6 @@
           </label>
         </div>
   
-        <!-- New Visibility Section -->
         <label class="label">Visibilité du projet :</label>
         <div class="flex gap-4">
           <label>
@@ -38,10 +37,11 @@
   import { ref, watch, computed } from 'vue'
   import {
     addProjectToFirestore,
-    updateProjectInFirestore
+    updateProjectInFirestore,
+    getProjects
   } from '@/composables/useFirestore'
-  import { getProjects } from '@/composables/useFirestore';  // Adjust the path if needed
-
+  import { getAuth } from 'firebase/auth'  // <<< AJOUTÉ pour récupérer l'utilisateur connecté
+  
   const props = defineProps({
     initialProject: Object
   })
@@ -51,7 +51,7 @@
   const description = ref('')
   const github = ref('')
   const stack = ref([])
-  const visibility = ref('public')  // Default visibility to "public"
+  const visibility = ref('public')
   const techList = ['Vue.js', 'React', 'Node.js', 'Firebase', 'Python', 'Laravel']
   
   const isEditMode = computed(() => !!props.initialProject)
@@ -64,48 +64,56 @@
         description.value = project.description || ''
         github.value = project.github || ''
         stack.value = project.stack || []
-        visibility.value = project.visibility || 'public' // Set visibility based on existing data
+        visibility.value = project.visibility || 'public'
       }
     },
     { immediate: true }
   )
   
   const submitProject = async () => {
-  // Validation for empty fields
-  if (!title.value || !description.value || !github.value || stack.value.length === 0) {
-    alert("Tous les champs doivent être remplis.");
-    return;
-  }
-
-  // Check if the project title already exists
-  const existingProjects = await getProjects();  // Function to fetch all projects
-  const isTitleTaken = existingProjects.some(project => project.title.toLowerCase() === title.value.toLowerCase());
+    if (!title.value || !description.value || !github.value || stack.value.length === 0) {
+      alert("Tous les champs doivent être remplis.");
+      return;
+    }
   
-  if (isTitleTaken) {
-    alert("Ce projet existe déjà. Veuillez choisir un autre titre.");
-    return;
-  }
-
-  const payload = {
-    title: title.value,
-    description: description.value,
-    github: github.value,
-    stack: stack.value,
-    visibility: visibility.value // If you added the visibility logic
+    const existingProjects = await getProjects();
+    const isTitleTaken = existingProjects.some(project => project.title.toLowerCase() === title.value.toLowerCase());
+  
+    if (isTitleTaken && !isEditMode.value) {
+      alert("Ce projet existe déjà. Veuillez choisir un autre titre.");
+      return;
+    }
+  
+    const auth = getAuth()
+    const user = auth.currentUser
+  
+    if (!user) {
+      alert("Utilisateur non connecté.");
+      return;
+    }
+  
+    const payload = {
+      title: title.value,
+      description: description.value,
+      github: github.value,
+      stack: stack.value,
+      visibility: visibility.value,
+      userId: user.uid, // <<< AJOUT ICI
+      createdAt: new Date()
+    };
+  
+    if (isEditMode.value) {
+      await updateProjectInFirestore(props.initialProject.id, payload);
+    } else {
+      await addProjectToFirestore(payload);
+    }
+  
+    emit('project-saved');
   };
-
-  if (isEditMode.value) {
-    await updateProjectInFirestore(props.initialProject.id, payload);
-  } else {
-    await addProjectToFirestore({ ...payload, createdAt: new Date() });
-  }
-
-  emit('project-saved');
-};
-
   </script>
   
   <style scoped>
+  /* ton style reste inchangé */
   .overlay {
     position: fixed;
     top: 0;

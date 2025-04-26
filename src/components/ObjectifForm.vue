@@ -35,7 +35,8 @@
     addObjectifToFirestore,
     updateObjectifInFirestore
   } from '@/composables/useFirestore'
-  
+  import { getAuth } from 'firebase/auth';
+
   const props = defineProps({
     initialObjectif: Object
   })
@@ -71,21 +72,42 @@
   })
   
   const submitObjectif = async () => {
-    const payload = {
-      title: title.value,
-      duree: duree.value,
-      progres: progres.value,
-      status: status.value,
-    }
-  
-    if (isEditMode.value) {
-      await updateObjectifInFirestore(props.initialObjectif.id, payload)
-    } else {
-      await addObjectifToFirestore({ ...payload, createdAt: new Date() })
-    }
-  
-    emit('objectif-saved')
+  // Check if all fields are filled out
+  if (!title.value || !duree.value || !progres.value || !status.value) {
+    alert("Tous les champs doivent être remplis.");
+    return;
   }
+
+  // Ensure the user is logged in
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("Utilisateur non connecté.");
+    return;
+  }
+
+  // Prepare the payload for the objectif
+  const payload = {
+    title: title.value,
+    duree: duree.value,
+    progres: progres.value,
+    status: status.value,
+    userId: user.uid,  // Include user ID for ownership tracking
+    createdAt: new Date(),
+  };
+
+  // Check if we are in edit mode and update accordingly
+  if (isEditMode.value) {
+    await updateObjectifInFirestore(props.initialObjectif.id, payload);  // Update objectif with the provided ID
+  } else {
+    await addObjectifToFirestore({ ...payload, createdAt: new Date() });  // Add new objectif with the current date
+  }
+
+  // Emit the event after saving
+  emit('objectif-saved');
+};
+
   </script>
   
   <style scoped>
