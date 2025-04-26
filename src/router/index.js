@@ -4,13 +4,14 @@ import Register from '@/views/Register.vue'
 import { auth} from '@/firebase/firebase.js';
 import HomeView from '@/views/HomeView.vue';
 import Principale from '@/views/Principale.vue';
-
+import Users from '@/views/Users.vue'
 const routes = [
   { path: '/Login', component: Login},
   { path: '/Register', component: Register},
   
   { path: '/', component: HomeView },
-  {path: '/Principale', component: Principale}
+  {path: '/Principale', component: Principale},
+  {path:'/Users', component: Users}
 ]
 
 const router = createRouter({

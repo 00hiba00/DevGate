@@ -1,14 +1,14 @@
 <template>
-    <div class="navbar">
+    <nav class="navbar">
       <h1 class="logo">DevGate</h1>
-      <router-link to="/Principale" >
+      <router-link to="/Users" >
       <button v-if="user">Retour</button>
     </router-link>
       <div v-if="user">
         <button @click="logout" class="btn-logout">Déconnecter</button>
       </div>
-    </div>
-</template>
+    </nav>
+  </template>
   
   <script setup>
   import { ref, onMounted } from 'vue'
