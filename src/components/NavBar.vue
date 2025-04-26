@@ -8,30 +8,27 @@
       <button v-if="user">Dashboard</button>
     </router-link>
       <div v-if="user">
-        <button @click="logout" class="btn-logout">Déconnecter</button>
+        <button @click="handleLogout" class="btn-logout">Déconnecter</button>
       </div>
     </nav>
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue'
-  import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
-  import { useRouter } from 'vue-router'
-  
-  const user = ref(null)
-  const auth = getAuth()
-  const router = useRouter()
-  
-  onMounted(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      user.value = currentUser
-    })
-  })
-  
-  const logout = async () => {
-    await signOut(auth)
-    router.push('/login')
+import { useRouter } from 'vue-router';
+import { useAuth } from '../composables/useAuth';
+
+const { logout, user } = useAuth();
+const router = useRouter();
+
+
+const handleLogout = async () => {
+  try {
+    await logout();
+    router.push('/login');
+  } catch (err) {
+    console.error('Erreur de déconnexion:', err.message);
   }
+};
   </script>
   
   <style scoped>
