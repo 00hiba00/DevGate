@@ -44,16 +44,23 @@ const filteredUsers = computed(() => {
   return filtered;
 });
 
+import { getAuth } from 'firebase/auth'
+
+// ...
+
+const currentUser = getAuth().currentUser
+
 const fetchUsers = async () => {
   try {
-    const querySnapshot = await getDocs(collection(db, "users"));
-    users.value = querySnapshot.docs.map(doc => 
-      ({uid: doc.id, ...doc.data()})
-    );
+    const querySnapshot = await getDocs(collection(db, 'users'))
+    users.value = querySnapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(user => user.id !== currentUser.uid) // <<< ici on enlève notre propre user
   } catch (error) {
-    console.error("Error fetching users: ", error);
+    console.error('Erreur en récupérant les utilisateurs :', error)
   }
-};
+}
+
 
 onMounted(() => {
   fetchUsers();
