@@ -3,22 +3,38 @@ import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 
 // Ajouter un projet à Firestore
 export const addProjectToFirestore = async (project) => {
-    try {
+  
       const docRef = await addDoc(collection(db, 'projects'), project)
       console.log('Document ajouté avec l\'ID : ', docRef.id)
-    } catch (e) {
-      console.error('Erreur lors de l\'ajout du projet : ', e)
+    
+      // 2. Ajouter une activité
+  await addDoc(collection(db, 'activites'), {
+    type: 'ajout',
+    category: 'projet',
+    relatedId: docRef.id,
+    date: Date(),
+    details: {
+      titre: project.title
     }
+  })
   }
   
   export const updateProjectInFirestore = async (id, updatedProject) => {
-    try {
+    
       const docRef = doc(db, 'projects', id)
       await updateDoc(docRef, updatedProject)
       console.log('Projet mis à jour avec succès : ', id)
-    } catch (e) {
-      console.error('Erreur lors de la mise à jour : ', e)
+    
+    // 2. Ajouter une activité
+  await addDoc(collection(db, 'activites'), {
+    type: 'modification',
+    category: 'projet',
+    relatedId: docRef.id,
+    date: Date(),
+    details: {
+      titre: updatedProject.title
     }
+  })
   }
   
   import { getAuth } from 'firebase/auth'
@@ -46,13 +62,20 @@ export const getProjects = async () => {
 
 // Supprimer un projet depuis Firestore
 export const deleteProjectFromFirestore = async (id) => {
-  try {
+  
     const docRef = doc(db, 'projects', id)
     await deleteDoc(docRef)
     console.log('Projet supprimé avec l\'ID : ', id)
-  } catch (e) {
-    console.error('Erreur lors de la suppression du projet : ', e)
-  }
+  
+  await addDoc(collection(db, 'activites'), {
+    type: 'supression',
+    category: 'projet',
+    relatedId: docRef.id,
+    date: Date(),
+    details: {
+      titre: project.title
+    }
+  })
 }
 import { updateDoc } from 'firebase/firestore'
 
@@ -81,42 +104,73 @@ export const getCompetences = async () => {
   }
   // Fonction pour ajouter une compétence
 export const addCompetenceToFirestore = async (competence) => {
-    try {
+    
       const docRef = await addDoc(collection(db, "competences"), competence);
       console.log('Compétence ajoutée avec l\'ID : ', docRef.id);
-    } catch (error) {
-      console.error("Erreur lors de l'ajout de la compétence : ", error);
-    }
+    
+    await addDoc(collection(db, 'activites'), {
+      type: 'ajout',
+      category: 'competence',
+      relatedId: docRef.id,
+      date: Date(),
+      details: {
+        titre: competence.title
+      }
+    })
   };
   
   
   // Fonction pour modifier une compétence
   export const updateCompetenceInFirestore = async (id, competence) => {
-    try {
+    
       const docRef = doc(db, "competences", id);
       await updateDoc(docRef, competence);
       console.log('Compétence mise à jour avec l\'ID : ', id);
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour de la compétence : ", error);
-    }
+    
+    await addDoc(collection(db, 'activites'), {
+      type: 'modification',
+      category: 'competence',
+      relatedId: docRef.id,
+      date: Date(),
+      details: {
+        titre: competence.title
+      }
+    })
   };
 
 
   export const deleteCompetenceFromFirestore = async (id) => {
   const docRef = doc(db, 'competences', id)
   await deleteDoc(docRef)
+
+  await addDoc(collection(db, 'activites'), {
+    type: 'supression',
+    category: 'competence',
+    relatedId: docRef.id,
+    date: Date(),
+    details: {
+      titre: competence.title
+    }
+  })
 }
 
 
 
   // Ajouter un projet à Firestore
 export const addObjectifToFirestore = async (objectif) => {
-  try {
+  
     const docRef = await addDoc(collection(db, 'objectifs'), objectif)
     console.log('Document ajouté avec l\'ID : ', docRef.id)
-  } catch (e) {
-    console.error("Erreur lors de l\'ajout de l'objectif : ", e)
-  }
+  
+  await addDoc(collection(db, 'activites'), {
+    type: 'ajout',
+    category: 'objectif',
+    relatedId: docRef.id,
+    date: Date(),
+    details: {
+      titre: objectif.title
+    }
+  })
 }
 
 // Récupérer tous les projets depuis Firestore
@@ -146,22 +200,36 @@ export const getObjectifs = async () => {
 
 // Supprimer un projet depuis Firestore
 export const deleteObjectifFromFirestore = async (id) => {
-  try {
+  
     const docRef = doc(db, 'objectifs', id)
     await deleteDoc(docRef)
     console.log('Objet supprimé avec l\'ID : ', id)
-  } catch (e) {
-    console.error('Erreur lors de la suppression du projet : ', e)
-  }
+
+  await addDoc(collection(db, 'activites'), {
+    type: 'supression',
+    category: 'objectif',
+    relatedId: docRef.id,
+    date: Date(),
+    details: {
+      titre: objectif.title
+    }
+  })
 }
 
 
 export const updateObjectifInFirestore = async (id, updatedobjectif) => {
-  try {
+  
     const docRef = doc(db, 'objectifs', id)
     await updateDoc(docRef, updatedobjectif)
     console.log('Objectif mis à jour avec succès : ', id)
-  } catch (e) {
-    console.error('Erreur lors de la mise à jour : ', e)
-  }
+
+  await addDoc(collection(db, 'activites'), {
+    type: 'modification',
+    category: 'objectif',
+    relatedId: docRef.id,
+    date: Date(),
+    details: {
+      titre: updatedobjectif.title
+    }
+  })
 }

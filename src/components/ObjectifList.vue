@@ -10,8 +10,13 @@
   
         <!-- Progression -->
         <div class="progress-section">
-          <label>Progression : {{ objectif.progres }}%</label>
-          <input type="range" :value="objectif.progres" min="0" max="100" disabled class="progress-bar" />
+        <label>Progression : {{ objectif.progres }}%</label>
+        <div class="progress-bar-wrapper">
+        <div
+        class="progress-bar-fill"
+        :style="{ width: objectif.progres + '%' }"
+        ></div>
+        </div>
         </div>
   
         <!-- Statut -->
@@ -74,27 +79,29 @@
   }
   
   /* Progression bar style */
-  .progress-section {
-    margin-top: 1rem;
-  }
+  /* Progression bar style */
+.progress-section {
+  margin-top: 1rem;
+}
+
+.progress-bar-wrapper {
+  width: 100%;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 8px;
+  margin-top: 0.5rem;
+}
+
+.progress-bar-fill {
+  background: #42b983;
+  height: 100%;
+  transition: width 0.4s ease;
+  border-radius: 4px;
+}
+
   
-  .progress-bar {
-    width: 100%;
-    margin-top: 0.5rem;
-    appearance: none;
-    height: 6px;
-    background: #ddd;
-    border-radius: 3px;
-  }
-  
-  .progress-bar::-webkit-slider-thumb {
-    appearance: none;
-    height: 16px;
-    width: 16px;
-    background: #42b983;
-    border-radius: 50%;
-    cursor: pointer;
-  }
+
   
   /* Status style */
   .status-section {
