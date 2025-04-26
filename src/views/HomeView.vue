@@ -1,11 +1,11 @@
 <template>
   <div>
     <router-link to="/Login" v-if="!isLoggedIn">
-      <b-button>Login</b-button>
+      <button>Login</button>
     </router-link>
 
     <router-link to="/Register" v-if="!isLoggedIn">
-      <b-button>Register</b-button>
+      <button>Register</button>
     </router-link>
 
     <b-button v-if="isLoggedIn" variant="outline-danger" @click="handleLogout" class="mb-3 float-end">

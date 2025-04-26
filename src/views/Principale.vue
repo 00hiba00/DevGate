@@ -15,6 +15,13 @@
         @competence-saved="fetchCompetencesAndCloseForm" 
         @close="closeCompetenceForm"
       />
+
+      <ObjectifForm 
+        v-if="isEditingObjectif || isAddingObjectif" 
+        :initialObjectif="currentObjectif" 
+        @objectif-saved="fetchObjectifsAndCloseForm" 
+        @close="closeObjectifForm"
+      />
       
       <!-- Vue toggle pour choisir entre grille et liste -->
       <ViewToggle @toggle="viewMode = $event" :current="viewMode" />
@@ -44,20 +51,37 @@
         @delete="deleteCompetence"
         @edit="editCompetence"
       />
+
+      <button @click="startAddingObjectif" class="btn">
+        Ajouter un objectif
+      </button>
+      
+      <!-- Liste des projets -->
+      <ObjectifList
+        :objectifs="objectifs"
+        :viewMode="viewMode"
+        @delete="deleteObjectif"
+        @edit="editObjectif"
+      />
+
     </div>
   </template>
   
   <script setup>
   import { ref, onMounted } from 'vue'
-  import { getProjects, deleteProjectFromFirestore, getCompetences, deleteCompetenceFromFirestore } from '@/composables/useFirestore'
+  import { getProjects, deleteProjectFromFirestore, getCompetences, deleteCompetenceFromFirestore, getObjectifs, deleteObjectifFromFirestore } from '@/composables/useFirestore'
   import ProjectForm from '@/components/ProjectForm.vue'
   import ProjectList from '@/components/ProjectList.vue'
   import ViewToggle from '@/components/ViewToggle.vue'
   import CompetenceForm from '@/components/CompetenceForm.vue'
   import CompetenceList from '@/components/CompetenceList.vue'
+  import ObjectifForm from '@/components/ObjectifForm.vue'
+  import ObjectifList from '@/components/ObjectifList.vue'
+
   
   const projects = ref([])
   const competences = ref([]) // Liste des compétences
+  const objectifs = ref([])
   const viewMode = ref('grid') // ou 'list'
   const isEditingProject = ref(false)
   const isAddingProject = ref(false)
@@ -65,6 +89,9 @@
   const isAddingCompetence = ref(false) // Nouveau flag pour l'ajout d'une compétence
   const currentProject = ref(null)
   const currentCompetence = ref(null)
+  const isEditingObjectif = ref(false)
+  const isAddingObjectif = ref(false)
+  const currentObjectif = ref(null)
   
   const fetchProjects = async () => {
     projects.value = await getProjects()
@@ -72,6 +99,10 @@
   
   const fetchCompetences = async () => {
     competences.value = await getCompetences()
+  }
+
+  const fetchObjectifs = async () => {
+    objectifs.value = await getObjectifs()
   }
   
   const fetchProjectsAndCloseForm = async () => {
@@ -83,6 +114,11 @@
     await fetchCompetences()
     closeCompetenceForm() // Ferme le formulaire après l'ajout ou la modification d'une compétence
   }
+
+  const fetchObjectifsAndCloseForm = async () => {
+    await fetchObjectifs()
+    closeObjectifForm() // Ferme le formulaire après l'ajout ou la modification d'un projet
+  }
   
   const deleteProject = async (id) => {
     await deleteProjectFromFirestore(id)
@@ -92,6 +128,11 @@
   const deleteCompetence = async (id) => {
     await deleteCompetenceFromFirestore(id)
     await fetchCompetences()
+  }
+
+  const deleteObjectif = async (id) => {
+    await deleteObjectifFromFirestore(id)
+    await fetchObjectifs()
   }
   
   const editProject = (project) => {
@@ -105,6 +146,12 @@
     isEditingCompetence.value = true
     isAddingCompetence.value = false
   }
+
+  const editObjectif = (objectif) => {
+    currentObjectif.value = objectif
+    isEditingObjectif.value = true
+    isAddingObjectif.value = false
+  }
   
   const startAddingProject = () => {
     isAddingProject.value = true
@@ -116,6 +163,12 @@
     isAddingCompetence.value = true
     isEditingCompetence.value = false
     currentCompetence.value = null // Réinitialiser les données de la compétence
+  }
+
+  const startAddingObjectif = () => {
+    isAddingObjectif.value = true
+    isEditingObjectif.value = false
+    currentObjectif.value = null // Réinitialiser les données du projet
   }
   
   const closeProjectForm = () => {
@@ -129,10 +182,17 @@
     isAddingCompetence.value = false
     currentCompetence.value = null
   }
+
+  const closeObjectifForm = () => {
+    isEditingObjectif.value = false
+    isAddingObjectif.value = false
+    currentObjectif.value = null
+  }
   
   onMounted(() => {
     fetchProjects()
     fetchCompetences()
+    fetchObjectifs()
   })
   </script>
   

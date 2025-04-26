@@ -6,7 +6,7 @@
         <input v-model="title" type="text" placeholder="Titre du projet" required class="input" />
         <textarea v-model="description" placeholder="Description du projet" required class="textarea" />
         <input v-model="github" type="url" placeholder="Lien GitHub" class="input" />
-  
+
         <label class="label">Stack utilisée :</label>
         <div class="flex flex-wrap gap-2">
           <label v-for="tech in techList" :key="tech" class="flex items-center gap-1">

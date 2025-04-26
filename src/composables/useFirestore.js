@@ -1,7 +1,6 @@
 import { db } from '@/firebase/firebase.js'
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 
-// Ajouter un projet à Firestore
 export const addProjectToFirestore = async (project) => {
   try {
     const docRef = await addDoc(collection(db, 'projects'), project)
@@ -42,6 +41,7 @@ export const updateProjectInFirestore = async (id, updatedProject) => {
     console.error('Erreur lors de la mise à jour : ', e)
   }
 }
+
 // Fonction pour récupérer les compétences
 export const getCompetences = async () => {
     try {
@@ -73,3 +73,45 @@ export const addCompetenceToFirestore = async (competence) => {
       console.error("Erreur lors de la mise à jour de la compétence : ", error);
     }
   };
+
+  // Ajouter un projet à Firestore
+export const addObjectifToFirestore = async (objectif) => {
+  try {
+    const docRef = await addDoc(collection(db, 'objectifs'), objectif)
+    console.log('Document ajouté avec l\'ID : ', docRef.id)
+  } catch (e) {
+    console.error("Erreur lors de l\'ajout de l'objectif : ", e)
+  }
+}
+
+// Récupérer tous les projets depuis Firestore
+export const getObjectifs = async () => {
+  const querySnapshot = await getDocs(collection(db, 'objectifs'))
+  const objectifs = []
+  querySnapshot.forEach((doc) => {
+    objectifs.push({ id: doc.id, ...doc.data() })
+  })
+  return objectifs
+}
+
+// Supprimer un projet depuis Firestore
+export const deleteObjectifFromFirestore = async (id) => {
+  try {
+    const docRef = doc(db, 'objectifs', id)
+    await deleteDoc(docRef)
+    console.log('Objet supprimé avec l\'ID : ', id)
+  } catch (e) {
+    console.error('Erreur lors de la suppression du projet : ', e)
+  }
+}
+
+
+export const updateObjectifInFirestore = async (id, updatedobjectif) => {
+  try {
+    const docRef = doc(db, 'objectifs', id)
+    await updateDoc(docRef, updatedobjectif)
+    console.log('Objectif mis à jour avec succès : ', id)
+  } catch (e) {
+    console.error('Erreur lors de la mise à jour : ', e)
+  }
+}
