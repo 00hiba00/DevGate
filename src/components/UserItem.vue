@@ -12,21 +12,23 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
-  user: {
-    type: Object,
-    required: true
-  }
-});
+  user: Object // Assure-toi que l'utilisateur a bien un `id` (user.id) que tu passes
+})
 
-const router = useRouter();
+const router = useRouter()
 
 const viewProfile = () => {
-  router.push({ name: 'Profile', params: { userId: props.user.uid } });
-};
+  // Vérifie si `user.id` existe avant de naviguer
+  if (props.user && props.user.id) {
+    router.push({ name: 'Profile', params: { userId: props.user.id } })
+  } else {
+    console.error("L'ID de l'utilisateur est manquant !");
+  }
+}
+
 </script>
 <style scoped>
 .user-card {

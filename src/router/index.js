@@ -5,7 +5,6 @@ import { auth} from '@/firebase/firebase.js';
 import HomeView from '@/views/HomeView.vue';
 import Principale from '@/views/Principale.vue';
 import Users from '@/views/Users.vue'
-import Profile from '@/views/Profile.vue';
 const routes = [
   { path: '/Login', component: Login},
   { path: '/Register', component: Register},
@@ -14,12 +13,11 @@ const routes = [
   {path: '/Principale', component: Principale},
   {path:'/Users', component: Users},
   {
-    path: '/Profile/:userId',
-    name: 'Profile',  // This name must match what you use in router.push()
-    component: Profile,
-    props: true,  // This will pass the params as props to ProfileCard
-    meta: { requiresAuth: true }
-  },
+    path: '/profile/:userId',
+    name: 'Profile',
+    component: () => import('@/views/Profile.vue')
+  }
+  
 ]
 
 const router = createRouter({
