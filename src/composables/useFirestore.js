@@ -114,7 +114,7 @@ export const addCompetenceToFirestore = async (competence) => {
       relatedId: docRef.id,
       date: Date(),
       details: {
-        titre: competence.title
+        titre: competence.name
       }
     })
   };
@@ -133,7 +133,7 @@ export const addCompetenceToFirestore = async (competence) => {
       relatedId: docRef.id,
       date: Date(),
       details: {
-        titre: competence.title
+        titre: competence.name
       }
     })
   };
@@ -149,7 +149,7 @@ export const addCompetenceToFirestore = async (competence) => {
     relatedId: docRef.id,
     date: Date(),
     details: {
-      titre: competence.title
+      titre: competence.name
     }
   })
 }
