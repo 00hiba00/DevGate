@@ -66,77 +66,112 @@ if (email.value) {
 
 <style scoped>
 .auth-container {
-  max-width: 420px;
-  margin: 3rem auto;
-  padding: 2.5rem;
-  border-radius: 16px;
-  background: linear-gradient(145deg, #ffffff, #f0f0f0);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.auth-container:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 2rem;
+.auth-container h2 {
   color: #2c3e50;
-  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
   font-weight: 600;
+  font-size: 1.8rem;
 }
 
 .b-form-group {
   margin-bottom: 1.5rem;
 }
 
+.b-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
 .b-form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  padding: 0.6rem 0.8rem;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 .b-form-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
 }
 
 .b-button {
   width: 100%;
-  padding: 0.6rem;
-  margin-top: 1rem;
+  padding: 0.75rem;
   border-radius: 8px;
-  background: linear-gradient(90deg, #007bff, #0056b3);
-  color: #fff;
-  border: none;
   font-weight: 600;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.b-button:hover {
-  background: linear-gradient(90deg, #0056b3, #004085);
+.b-button[type="submit"] {
+  background-color: #3498db;
+  border: none;
+  color: white;
+  margin-top: 1rem;
+}
+
+.b-button[type="submit"]:hover {
+  background-color: #2980b9;
 }
 
 .b-button[variant="link"] {
-  background: none;
-  color: #007bff;
-  padding: 0;
-  margin-top: 0.8rem;
-  text-align: center;
   display: block;
-}
-
-.b-button[variant="link"]:hover {
+  text-align: center;
+  margin-top: 1rem;
+  color: #7f8c8d;
+  background: none;
+  border: none;
   text-decoration: underline;
 }
 
-.b-alert {
-  border-radius: 8px;
-  padding: 0.8rem 1rem;
-  font-weight: 500;
-  text-align: center;
+.b-button[variant="link"]:hover {
+  color: #3498db;
 }
+
+.b-alert {
+  margin-top: 1.5rem;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.router-link {
+  display: block;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.router-link .b-button {
+  width: auto;
+  padding: 0.5rem 1.5rem;
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  border: 1px solid #ddd;
+}
+
+.router-link .b-button:hover {
+  background-color: #e9ecef;
+}
+
+@media (max-width: 576px) {
+  .auth-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
 </style>
