@@ -15,7 +15,7 @@
         </a>
         <div class="mt-3 flex gap-2">
           <button @click="editProject(project)">Modifier</button>
-          <button @click="$emit('delete', project.id)">Supprimer</button>
+          <button @click="$emit('delete', project)">Supprimer</button>
         </div>
       </div>
     </div>

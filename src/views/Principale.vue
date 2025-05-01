@@ -62,6 +62,8 @@
         @delete="deleteObjectif"
         @edit="editObjectif"
       />
+      
+      <Timeline />
     </div>
   </template>
   
@@ -75,11 +77,12 @@
   import CompetenceList from '@/components/CompetenceList.vue'
   import ObjectifForm from '@/components/ObjectifForm.vue'
   import ObjectifList from '@/components/ObjectifList.vue'
+  import Timeline from '@/components/Timeline.vue'
 
   const projects = ref([])
   const competences = ref([]) // Liste des compétences
   const objectifs = ref([])
-  const viewMode = ref('grid') // ou 'list'
+  const viewMode = ref('grid')
   const isEditingProject = ref(false)
   const isAddingProject = ref(false)
   const isEditingCompetence = ref(false)
@@ -113,18 +116,18 @@
     await fetchObjectifs()
     closeObjectifForm() // Ferme le formulaire après l'ajout ou la modification d'un projet
   }
-  const deleteProject = async (id) => {
-    await deleteProjectFromFirestore(id)
+  const deleteProject = async (project) => {
+    await deleteProjectFromFirestore(project)
     await fetchProjects()
   }
   
-  const deleteCompetence = async (id) => {
-  console.log('ID reçu pour suppression:', id)
-  await deleteCompetenceFromFirestore(id)
+  const deleteCompetence = async (competence) => {
+  console.log('ID reçu pour suppression:', competence.id)
+  await deleteCompetenceFromFirestore(competence)
   await fetchCompetences()
 }
-const deleteObjectif = async (id) => {
-    await deleteObjectifFromFirestore(id)
+const deleteObjectif = async (objectif) => {
+    await deleteObjectifFromFirestore(objectif)
     await fetchObjectifs()
   }
   

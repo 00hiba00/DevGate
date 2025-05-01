@@ -8,7 +8,7 @@
 
         <div class="mt-3 flex gap-2">
             <button @click="$emit('edit', competence)">Modifier</button>
-            <button @click="$emit('delete', competence.id)">Supprimer</button>
+            <button @click="$emit('delete', competence)">Supprimer</button>
         </div>
       </div>
     </div>

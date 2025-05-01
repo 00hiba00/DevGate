@@ -1,9 +1,11 @@
 import { db } from '@/firebase/firebase.js'
-import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from 'firebase/firestore'
+
 
 // Ajouter un projet à Firestore
 export const addProjectToFirestore = async (project) => {
-  
+  const auth = getAuth();
+  const user = auth.currentUser;
       const docRef = await addDoc(collection(db, 'projects'), project)
       console.log('Document ajouté avec l\'ID : ', docRef.id)
     
@@ -12,7 +14,8 @@ export const addProjectToFirestore = async (project) => {
     type: 'ajout',
     category: 'projet',
     relatedId: docRef.id,
-    date: Date(),
+    userId: user.uid,
+    date: serverTimestamp(),
     details: {
       titre: project.title
     }
@@ -20,7 +23,8 @@ export const addProjectToFirestore = async (project) => {
   }
   
   export const updateProjectInFirestore = async (id, updatedProject) => {
-    
+    const auth = getAuth();
+    const user = auth.currentUser;
       const docRef = doc(db, 'projects', id)
       await updateDoc(docRef, updatedProject)
       console.log('Projet mis à jour avec succès : ', id)
@@ -30,7 +34,8 @@ export const addProjectToFirestore = async (project) => {
     type: 'modification',
     category: 'projet',
     relatedId: docRef.id,
-    date: Date(),
+    userId: user.uid,
+    date: serverTimestamp(),
     details: {
       titre: updatedProject.title
     }
@@ -38,7 +43,7 @@ export const addProjectToFirestore = async (project) => {
   }
   
   import { getAuth } from 'firebase/auth'
-  import { query, where } from 'firebase/firestore'
+  import { query, where, orderBy, onSnapshot } from 'firebase/firestore'
 
 // Récupérer tous les projets depuis Firestore
 export const getProjects = async () => {
@@ -61,17 +66,19 @@ export const getProjects = async () => {
 
 
 // Supprimer un projet depuis Firestore
-export const deleteProjectFromFirestore = async (id) => {
-  
-    const docRef = doc(db, 'projects', id)
+export const deleteProjectFromFirestore = async (project) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+    const docRef = doc(db, 'projects', project.id)
     await deleteDoc(docRef)
-    console.log('Projet supprimé avec l\'ID : ', id)
+    console.log('Projet supprimé avec l\'ID : ', project.id)
   
   await addDoc(collection(db, 'activites'), {
     type: 'supression',
     category: 'projet',
     relatedId: docRef.id,
-    date: Date(),
+    userId: user.uid,
+    date: serverTimestamp(),
     details: {
       titre: project.title
     }
@@ -104,7 +111,8 @@ export const getCompetences = async () => {
   }
   // Fonction pour ajouter une compétence
 export const addCompetenceToFirestore = async (competence) => {
-    
+  const auth = getAuth();
+  const user = auth.currentUser;
       const docRef = await addDoc(collection(db, "competences"), competence);
       console.log('Compétence ajoutée avec l\'ID : ', docRef.id);
     
@@ -112,7 +120,8 @@ export const addCompetenceToFirestore = async (competence) => {
       type: 'ajout',
       category: 'competence',
       relatedId: docRef.id,
-      date: Date(),
+      userId: user.uid,
+      date: serverTimestamp(),
       details: {
         titre: competence.name
       }
@@ -122,7 +131,8 @@ export const addCompetenceToFirestore = async (competence) => {
   
   // Fonction pour modifier une compétence
   export const updateCompetenceInFirestore = async (id, competence) => {
-    
+    const auth = getAuth();
+    const user = auth.currentUser;
       const docRef = doc(db, "competences", id);
       await updateDoc(docRef, competence);
       console.log('Compétence mise à jour avec l\'ID : ', id);
@@ -131,7 +141,8 @@ export const addCompetenceToFirestore = async (competence) => {
       type: 'modification',
       category: 'competence',
       relatedId: docRef.id,
-      date: Date(),
+      userId: user.uid,
+      date: serverTimestamp(),
       details: {
         titre: competence.name
       }
@@ -139,15 +150,18 @@ export const addCompetenceToFirestore = async (competence) => {
   };
 
 
-  export const deleteCompetenceFromFirestore = async (id) => {
-  const docRef = doc(db, 'competences', id)
+  export const deleteCompetenceFromFirestore = async (competence) => {
+    const auth = getAuth();
+  const user = auth.currentUser;
+  const docRef = doc(db, 'competences', competence.id)
   await deleteDoc(docRef)
 
   await addDoc(collection(db, 'activites'), {
     type: 'supression',
     category: 'competence',
     relatedId: docRef.id,
-    date: Date(),
+    userId: user.uid,
+    date: serverTimestamp(),
     details: {
       titre: competence.name
     }
@@ -158,7 +172,8 @@ export const addCompetenceToFirestore = async (competence) => {
 
   // Ajouter un projet à Firestore
 export const addObjectifToFirestore = async (objectif) => {
-  
+  const auth = getAuth();
+  const user = auth.currentUser;
     const docRef = await addDoc(collection(db, 'objectifs'), objectif)
     console.log('Document ajouté avec l\'ID : ', docRef.id)
   
@@ -166,7 +181,8 @@ export const addObjectifToFirestore = async (objectif) => {
     type: 'ajout',
     category: 'objectif',
     relatedId: docRef.id,
-    date: Date(),
+    userId: user.uid,
+    date: serverTimestamp(),
     details: {
       titre: objectif.title
     }
@@ -199,17 +215,19 @@ export const getObjectifs = async () => {
 };
 
 // Supprimer un projet depuis Firestore
-export const deleteObjectifFromFirestore = async (id) => {
-  
-    const docRef = doc(db, 'objectifs', id)
+export const deleteObjectifFromFirestore = async (objectif) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+    const docRef = doc(db, 'objectifs', objectif.id)
     await deleteDoc(docRef)
-    console.log('Objet supprimé avec l\'ID : ', id)
+    console.log('Objet supprimé avec l\'ID : ', objectif.id)
 
   await addDoc(collection(db, 'activites'), {
     type: 'supression',
     category: 'objectif',
     relatedId: docRef.id,
-    date: Date(),
+    userId: user.uid,
+    date: serverTimestamp(),
     details: {
       titre: objectif.title
     }
@@ -218,7 +236,8 @@ export const deleteObjectifFromFirestore = async (id) => {
 
 
 export const updateObjectifInFirestore = async (id, updatedobjectif) => {
-  
+  const auth = getAuth();
+  const user = auth.currentUser;
     const docRef = doc(db, 'objectifs', id)
     await updateDoc(docRef, updatedobjectif)
     console.log('Objectif mis à jour avec succès : ', id)
@@ -227,9 +246,32 @@ export const updateObjectifInFirestore = async (id, updatedobjectif) => {
     type: 'modification',
     category: 'objectif',
     relatedId: docRef.id,
-    date: Date(),
+    userId: user.uid,
+    date: serverTimestamp(),
     details: {
       titre: updatedobjectif.title
     }
   })
 }
+
+
+export const listenToActivities = (callback) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) throw new Error('Utilisateur non connecté.');
+
+  const q = query(
+    collection(db, 'activites'),
+    where('userId', '==', user.uid),
+    orderBy('date', 'desc')
+  );
+
+  return onSnapshot(q, (querySnapshot) => {
+    const activities = [];
+    querySnapshot.forEach((doc) => {
+      activities.push({ id: doc.id, ...doc.data() });
+    });
+    callback(activities);
+  });
+};
