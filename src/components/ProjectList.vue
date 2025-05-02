@@ -60,9 +60,10 @@ const chartOptions = ref({
       shadeIntensity: 0.5,
       colorScale: {
         ranges: [
-          { from: 0, to: 59, name: '< 1h', color: '#d4f4fa' },
-          { from: 60, to: 239, name: '1–4h', color: '#4db6ac' },
-          { from: 240, to: 1440, name: '4h+', color: '#00796b' }
+        { from: 0, to: 0, name: 'Aucune activité', color: '#e0e0e0' },  // Light gray for 0
+        { from: 1, to: 59, name: '< 1h', color: '#d4f4fa' },
+        { from: 60, to: 239, name: '1–4h', color: '#4db6ac' },
+        { from: 240, to: 1440, name: '4h+', color: '#00796b' }
         ]
       }
     }
@@ -83,9 +84,9 @@ const emit = defineEmits(['delete', 'edit'])
 
 // Add this computed property
 const chartSeries = computed(() => (projectId) => {
-  return [{ 
-    name: 'Temps (min)', 
-    data: chartData.value[projectId] || [] 
+  return [{
+    name: 'Temps (min)',
+    data: chartData.value[projectId] || []
   }]
 })
 
@@ -97,28 +98,63 @@ const fetchSessions = async () => {
       ...doc.data()
     }))
 
-    const grouped = {}
+    const rawData = {}
 
+    // First pass: create per-project date-duration map
     for (const project of props.projects) {
       const projectSessions = sessions.filter(s => s.projectId === project.id)
       const data = {}
 
       for (const session of projectSessions) {
         if (session.startTime && session.endTime) {
-          const start = session.startTime.toDate()
-          const end = session.endTime.toDate()
-          const minutes = Math.round((end - start) / 60000)
-          const dateKey = start.toISOString().split('T')[0]
-          
-          if (data[dateKey]) {
-            data[dateKey] += minutes
-          } else {
-            data[dateKey] = minutes
+          let start = session.startTime.toDate()
+          let end = session.endTime.toDate()
+
+          while (start < end) {
+            const currentDateKey = start.toLocaleDateString('sv-SE')
+
+            const endOfDay = new Date(start)
+            endOfDay.setHours(23, 59, 59, 999)
+
+            const chunkEnd = end < endOfDay ? end : endOfDay
+            const chunkDuration = Math.round((chunkEnd - start) / 60000)
+
+            if (!data[currentDateKey]) data[currentDateKey] = 0
+            data[currentDateKey] += chunkDuration
+
+            start = new Date(endOfDay)
+            start.setHours(0, 0, 0, 0)
+            start.setDate(start.getDate() + 1)
           }
         }
       }
 
-      grouped[project.id] = Object.entries(data).map(([x, y]) => ({ x, y }))
+      rawData[project.id] = data
+    }
+
+    // Collect all unique dates across all projects
+    const allDatesSet = new Set()
+    Object.values(rawData).forEach(dataMap => {
+      Object.keys(dataMap).forEach(date => allDatesSet.add(date))
+    })
+    const allDates = Array.from(allDatesSet).sort()
+
+    // Second pass: align data to global date range
+    const grouped = {}
+    for (const project of props.projects) {
+      const data = rawData[project.id]
+      grouped[project.id] = allDates.map(date => ({
+        x: date,
+        y: data[date] || 0
+      }))
+    }
+
+    chartOptions.value = {
+      ...chartOptions.value,
+      xaxis: {
+        categories: allDates,
+        type: 'category'
+      }
     }
 
     chartData.value = grouped
@@ -126,6 +162,8 @@ const fetchSessions = async () => {
     console.error("Error fetching sessions:", error)
   }
 }
+
+
 
 watch(() => props.projects, (newProjects) => {
   if (newProjects?.length) fetchSessions()
