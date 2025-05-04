@@ -1,0 +1,99 @@
+/* Base container */
+.objectif-list {
+    padding: 2rem !important;
+    color: var(--text-color, #e0e0e0) !important;
+    background-color: var(--background-color, #121212) !important;
+  }
+/* Grid layout for objectif list */
+.objectif-list.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* List view styling */
+  .objectif-list.list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* Objective cards */
+  .objectif-card {
+    background-color: var(--card-background, #1f1f2e) !important;
+    border-radius: 8px !important;
+    padding: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Title of the objective */
+  .objectif-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #b3a0ff !important; /* Light violet for the title */
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Radial chart container */
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  
+  /* Status section */
+  .status-section {
+    margin-top: 1rem;
+  }
+  
+  .status {
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+  
+  /* Status - Completed */
+  .status.completed {
+    background-color: #00e396 !important; /* Green */
+    color: white !important;
+  }
+  
+  /* Status - In-progress */
+  .status.in-progress {
+    background-color: #8a8eff !important; /* Violet clair */
+    color: white !important;
+  }
+  
+  /* Buttons */
+  .objectif-card button {
+    background-color: #5e4b8b !important; /* Dark violet-blue for buttons */
+    color: white !important;
+    border: none !important;
+    padding: 0.6rem 1.2rem !important; /* Reduced padding */
+    border-radius: 6px !important; /* Slightly smaller border-radius */
+    font-weight: 600 !important;
+    margin: 0.5rem 0.3rem !important; /* Reduced margin */
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+    font-size: 0.9rem !important; /* Slightly smaller font size */
+  }
+  
+  /* Buttons hover effect */
+  .objectif-card button:hover {
+    background-color: #453375 !important; /* Lighter shade on hover */
+  }
+  
+  /* Links (if any) */
+  .objectif-card a {
+    color: #b3a0ff !important; /* Violet link color */
+    text-decoration: underline;
+  }
+  
+  .objectif-card a:hover {
+    color: #ffb3e6 !important; /* Light pink hover effect */
+  }
+  
