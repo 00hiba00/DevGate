@@ -1,8 +1,6 @@
 <template>
   <div>
-    <button @click="viewMyProfile" class="btn profile-btn">
-      Voir mon profil
-    </button>
+    
     <!-- All your existing template code remains untouched -->
     <ProjectForm 
       v-if="isEditingProject || isAddingProject" 
@@ -268,9 +266,7 @@ const closeObjectifForm = () => {
   currentObjectif.value = null
 }
 
-const viewMyProfile = () => {
-  router.push('/my-profile');
-};
+
 onMounted(() => {
   fetchProjects()
   fetchCompetences()
@@ -281,27 +277,45 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* All your existing styles remain exactly the same */
+body {
+  background-color: #1e1e2e;
+}
+
 div {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* ProjectForm, CompetenceForm and ViewToggle spacing */
 :deep(.project-form),
 :deep(.competence-form),
 :deep(.view-toggle) {
   margin-bottom: 2rem;
 }
 
-:deep(.project-list.grid),
+/* Project list grid layout */
+:deep(.project-list.grid) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* List view styling */
+:deep(.project-list.list) {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Competence list grid layout */
 :deep(.competence-list.grid) {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
-:deep(.project-list.list),
+/* List view styling */
 :deep(.competence-list.list) {
   display: flex;
   flex-direction: column;
@@ -309,79 +323,39 @@ div {
 }
 
 .btn {
-  background-color: #42b983;
+  background-color: #6a5bff; /* Blue-violet */
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
   font-size: 1rem;
   border-radius: 0.75rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
   align-self: flex-start;
   margin-bottom: 1rem;
 }
 
 .btn:hover {
-  background-color: #36976f;
+  background-color: #4e45cc; /* Darker blue-violet */
+  transform: scale(1.05); /* Slight scaling effect on hover */
+}
+
+/* Focus effect for accessibility */
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(106, 91, 255, 0.7);
 }
 
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-/* NEW STYLES ONLY FOR FOLLOW SECTION */
-.connections-section {
-  margin-top: 3rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.connections-container {
-  display: flex;
-  gap: 2rem;
-  margin-top: 1.5rem;
-}
-
-.connections-column {
-  flex: 1;
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 12px;
-}
-
-.connections-column h3 {
-  color: #42b983;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-}
-
-.connections-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.connection-item {
-  padding: 0.8rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.empty-connections {
-  color: #888;
-  font-style: italic;
-  padding: 1rem 0;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
 }
 </style>
