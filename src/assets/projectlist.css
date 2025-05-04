@@ -1,0 +1,126 @@
+/* Base container */
+.project-list {
+    padding: 2rem !important;
+    color: var(--text-color, #e0e0e0) !important;
+    background-color: var(--background-color, #121212) !important;
+  }
+  
+  /* Project cards */
+  .project-card {
+    background-color: var(--card-background, #1f1f2e) !important;
+    border-radius: 8px !important;
+    padding: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .project-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #b3a0ff !important; /* Light violet for the title */
+    margin-bottom: 0.5rem;
+  }
+  
+  .visibility-badge {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+    text-transform: uppercase;
+  }
+  
+  .visibility-badge.public {
+    background-color: #8a8eff !important;
+    color: white !important;
+  }
+  
+  .visibility-badge.private {
+    background-color: #c90076 !important; /* Bright violet-red for private */
+    color: white !important;
+  }
+  
+  /* Links */
+  .project-card a {
+    color: #b3a0ff !important; /* Violet link color */
+    text-decoration: underline;
+  }
+  
+  .project-card a:hover {
+    color: #ffb3e6 !important; /* Light pink hover effect */
+  }
+  
+  /* Buttons */
+  .project-card button {
+    background-color: #5e4b8b !important; /* Dark violet-blue for buttons */
+    color: white !important;
+    border: none !important;
+    padding: 0.6rem 1.2rem !important; /* Reduced padding */
+    border-radius: 6px !important; /* Slightly smaller border-radius */
+    font-weight: 600 !important;
+    margin: 0.5rem 0.3rem !important; /* Reduced margin */
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+    font-size: 0.9rem !important; /* Slightly smaller font size */
+  }
+  
+  .project-card button:hover {
+    background-color: #453375 !important; /* Lighter shade on hover */
+  }
+  
+  /* Heatmap Chart */
+  .project-card .apexcharts-canvas {
+    border-radius: 8px !important;
+    margin-top: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+ /* Chart title, axis labels, and tooltips */
+.apexcharts-legend-text,
+.apexcharts-xaxis-label,
+.apexcharts-yaxis-label,
+.apexcharts-tooltip-text {
+  color: #ffffff !important; /* Texte en blanc */
+}
+
+/* Forcing color change on chart's x and y axis labels */
+.apexcharts-xaxis .apexcharts-xaxis-label,
+.apexcharts-yaxis .apexcharts-yaxis-label {
+  color: #ffffff !important; /* Blanc pour les labels des axes */
+}
+
+/* Tooltip text */
+.apexcharts-tooltip-text {
+  color: #ffffff !important; /* Texte des tooltips en blanc */
+  font-size: 0.9rem !important; /* Ajustement de la taille de texte des tooltips */
+}
+
+/* Chart grid lines */
+.apexcharts-xaxis,
+.apexcharts-yaxis {
+  stroke: #444444 !important; /* Lignes de grille visibles */
+}
+
+/* Adjust heatmap chart colors (make sure bars are still visible) */
+.apexcharts-series .apexcharts-bar {
+  fill: #5e4b8b !important; /* Barres en violet foncé */
+}
+
+/* Tooltip background color */
+.apexcharts-tooltip {
+  background-color: #333333 !important; /* Fond sombre pour les tooltips */
+  color: white !important; /* Texte en blanc pour les tooltips */
+  border-radius: 8px !important; /* Coins arrondis pour les tooltips */
+}
+
+/* If chart canvas elements are involved, you may need to adjust them as well */
+.apexcharts-canvas .apexcharts-xaxis-label,
+.apexcharts-canvas .apexcharts-yaxis-label {
+  color: #ffffff !important; /* Assure que les labels d'axes sont blancs */
+}
+
+.apexcharts-canvas .apexcharts-tooltip {
+  color: white !important; /* Texte des tooltips en blanc sur le canvas */
+}
+
+.apexcharts-canvas .apexcharts-legend-text {
+  color: #ffffff !important; /* Légende en blanc */
+}
