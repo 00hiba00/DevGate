@@ -10,6 +10,9 @@
     <router-link to="/Activite">
       <button v-if="user">Activite</button>
     </router-link>
+        <button  v-if="user" @click="viewMyProfile" class="btn profile-btn">
+  Voir mon profil
+</button>
       <div v-if="user">
         <button @click="handleLogout" class="btn-logout">Déconnecter</button>
       </div>
@@ -23,7 +26,9 @@ import { useAuth } from '../composables/useAuth';
 const { logout, user } = useAuth();
 const router = useRouter();
 
-
+const viewMyProfile = () => {
+  router.push('/my-profile');
+};
 const handleLogout = async () => {
   try {
     await logout();
