@@ -87,69 +87,86 @@ const cancel = () => {
 </script>
 
   <style scoped>
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .form-card {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 1rem;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  
-  .input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 0.75rem;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .actions {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .btn {
-    padding: 0.6rem 1.2rem;
-    border-radius: 0.75rem;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    background: #42b983;
-    color: white;
-    margin-right: 0.5rem;
-  }
-  
-  .cancel {
-    background: #ccc;
-    color: #333;
-  }
   .competence-form-modal {
-  background: white;
+  background: rgba(30, 27, 75, 0.6); /* Fond semi-transparent bleu-violet */
+  backdrop-filter: blur(6px);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.form-content {
+  background: #1e1b4b; /* Indigo très foncé */
+  color: #f9fafb; /* Presque blanc pour contraste */
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 1rem;
   width: 90%;
   max-width: 500px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #a78bfa; /* Violet clair */
+  text-align: center;
+}
+
+.input {
+  padding: 0.75rem;
+  border: 1px solid #4c1d95; /* Bordure violet foncé */
+  background-color: #312e81; /* Indigo foncé */
+  color: #f3f4f6; /* Texte clair */
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: #c4b5fd; /* Placeholder violet pâle */
+}
+
+.input:focus {
+  outline: none;
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3);
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+  background: #7c3aed; /* Violet vif */
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #6d28d9; /* Violet plus foncé */
+}
+
+.btn.cancel {
+  background: #6b7280; /* Gris foncé */
+}
+
+.btn.cancel:hover {
+  background: #4b5563;
+}
+
+
   </style>
