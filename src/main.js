@@ -8,6 +8,7 @@ import BootstrapVue3 from 'bootstrap-vue-3'
 import { MotionPlugin } from '@vueuse/motion'
 import VueApexCharts from "vue3-apexcharts";
 
+
 const app = createApp(App)
 app.use(BootstrapVue3)
 app.use(MotionPlugin)
