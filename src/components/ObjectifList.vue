@@ -34,7 +34,7 @@
 
       <div class="mt-3 flex gap-2">
         <button @click="editObjectif(objectif)">Modifier</button>
-        <button @click="$emit('delete', objectif)">Supprimer</button>
+        <button @click="confirmDelete(objectif)">Supprimer</button>
       </div>
     </div>
   </div>
@@ -59,6 +59,12 @@ const emit = defineEmits(['delete', 'edit'])
 
 const editObjectif = (objectif) => {
   emit('edit', objectif)
+}
+
+const confirmDelete = (objectif) => {
+  if (confirm(`Es-tu sûr de vouloir supprimer "${objectif.title}" ?`)) {
+    emit('delete', objectif)
+  }
 }
 
 // Function to get color based on progress %
@@ -97,61 +103,6 @@ const getChartOptions = (objectif) => ({
 })
 </script>
 
-<style scoped>
-.objectif-card {
-  background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
-  transition: transform 0.2s ease;
-}
-
-.objectif-card:hover {
-  transform: translateY(-5px);
-}
-
-.objectif-card button {
-  margin-right: 0.5rem;
-  border-radius: 0.5rem;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  background-color: #42b983;
-  color: white;
-  transition: background-color 0.2s;
-}
-
-.objectif-card button:hover {
-  background-color: #36976f;
-}
-
-/* Radial chart container */
-.chart-container {
-  display: flex;
-  justify-content: center;
-  margin: 1rem 0;
-}
-
-/* Status style */
-.status-section {
-  margin-top: 1rem;
-}
-
-.status {
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  margin-left: 0.5rem;
-}
-
-.in-progress {
-  background-color: #ffe08a;
-  color: #8a6d00;
-}
-
-.completed {
-  background-color: #c8f7c5;
-  color: #2c7a2c;
-}
+<style>
+@import '../assets/styles/objectiflist.css';
 </style>
