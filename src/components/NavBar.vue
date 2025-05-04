@@ -7,6 +7,9 @@
     <router-link to="/Principale" >
       <button v-if="user">Dashboard</button>
     </router-link>
+    <router-link to="/Activite">
+      <button v-if="user">Activite</button>
+    </router-link>
       <div v-if="user">
         <button @click="handleLogout" class="btn-logout">Déconnecter</button>
       </div>
@@ -30,30 +33,7 @@ const handleLogout = async () => {
   }
 };
   </script>
-  
-  <style scoped>
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #f5f5f5;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  }
-  .logo {
-    font-weight: bold;
-    font-size: 1.5rem;
-  }
-  .btn-logout {
-    background-color: #e3342f;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-  }
-  .btn-logout:hover {
-    background-color: #cc1f1a;
-  }
-  </style>
+<style>
+@import '../assets/styles/navbar.css';
+</style>
   
