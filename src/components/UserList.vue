@@ -124,10 +124,11 @@ onMounted(() => {
 .user-list-container {
   max-width: 900px;
   margin: 2rem auto;
-  padding: 1.5rem;
-  background-color: #f9f9fb;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  background-color: #1a1a1d;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(98, 0, 234, 0.2);
+  color: #f1f1f1;
 }
 
 .search-bar {
@@ -139,10 +140,39 @@ onMounted(() => {
   margin: 0 auto;
 }
 
+.b-form-input {
+  background-color: #2b2b30;
+  border: 1px solid #444;
+  color: #eaeaea;
+  border-radius: 12px;
+  padding: 0.7rem 1.2rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.b-form-input::placeholder {
+  color: #a8a8a8;
+}
+
+.b-form-input:focus {
+  border-color:rgb(46, 7, 204);
+  box-shadow: 0 0 5px rgba(50, 7, 221, 0.7);
+  outline: none;
+}
+
 .empty-state {
   text-align: center;
   padding: 2rem;
-  color: #6c757d;
+  color: #bbbbbb;
+}
+
+.b-alert {
+  border-radius: 10px;
+  background-color: #2d2d32;
+  color: #e0e0e0;
+  font-size: 1.1rem;
+  padding: 1.2rem;
+  border: 1px solidrgb(34, 9, 134);
+  box-shadow: 0 0 10px rgba(40, 7, 170, 0.3);
 }
 
 .user-grid {
@@ -151,25 +181,4 @@ onMounted(() => {
   gap: 1.5rem;
 }
 
-.b-button {
-  margin-bottom: 1.5rem;
-  padding: 0.75rem 2rem;
-  background: #007bff;
-  border: none;
-  color: white;
-  border-radius: 50px;
-  font-weight: 600;
-  transition: background-color 0.3s;
-}
-
-.b-button:hover {
-  background: #0056b3;
-}
-
-.b-alert {
-  border-radius: 8px;
-  font-size: 1.1rem;
-  padding: 1.25rem;
-  margin-top: 1rem;
-}
 </style>

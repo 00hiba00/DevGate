@@ -2,13 +2,13 @@
     <nav class="navbar">
       <h1 class="logo">DevGate</h1>
       <router-link to="/Users" >
-      <button v-if="user">Users</button>
+      <button v-if="user">Utilisateurs</button>
     </router-link>
     <router-link to="/Principale" >
-      <button v-if="user">Dashboard</button>
+      <button v-if="user">Tableau de bord</button>
     </router-link>
     <router-link to="/Activite">
-      <button v-if="user">Activite</button>
+      <button v-if="user">Activités</button>
     </router-link>
         <button  v-if="user" @click="viewMyProfile" class="btn profile-btn">
   Voir mon profil

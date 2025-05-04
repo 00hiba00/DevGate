@@ -33,7 +33,7 @@ const showNavbar = computed(() => {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #121212;
+  background-color: #2d2d32;
 }
 
 nav {
@@ -46,6 +46,13 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color:rgb(68, 66, 185);
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #2d2d32;
+}
+
 </style>

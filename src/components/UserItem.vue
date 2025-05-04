@@ -53,21 +53,21 @@ defineEmits(['view-profile', 'follow', 'unfollow']);
 </script>
 
 <style scoped>
-/* Tous vos styles originaux préservés */
 .user-card {
-  background: white;
+  background: #242424;
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-  transition: all 0.6s cubic-bezier(0.25,0.8,0.25,1);
+  box-shadow: 0 15px 35px rgba(127, 96, 249, 0.05);
+  transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
+  color: #f1f1f1;
 }
 
 .user-card:hover {
   transform: translateY(-8px);
   box-shadow: 
-    0 25px 50px rgba(0,0,0,0.1),
-    0 0 0 1px rgba(255,154,158,0.2);
+    0 25px 50px rgba(127, 96, 249, 0.1),
+    0 0 0 1px rgba(127, 96, 249, 0.3);
 }
 
 .user-card::before {
@@ -77,7 +77,7 @@ defineEmits(['view-profile', 'follow', 'unfollow']);
   left: 0;
   width: 100%;
   height: 8px;
-  background: linear-gradient(90deg, #FF9A9E, #FAD0C4);
+  background: linear-gradient(90deg, #7f60f9,rgb(63, 29, 185));
 }
 
 .user-avatar {
@@ -85,14 +85,14 @@ defineEmits(['view-profile', 'follow', 'unfollow']);
   height: 100px;
   border-radius: 50%;
   margin: 2.5rem auto 1.5rem;
-  background: linear-gradient(45deg, #FF9A9E, #FAD0C4);
+  background: linear-gradient(45deg, #7f60f9,rgb(40, 25, 180));
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 2.5rem;
   font-weight: bold;
-  box-shadow: 0 10px 20px rgba(255,154,158,0.3);
+  box-shadow: 0 10px 20px rgba(127, 96, 249, 0.3);
 }
 
 .user-info {
@@ -103,12 +103,12 @@ defineEmits(['view-profile', 'follow', 'unfollow']);
 .user-name {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #333;
+  color: #eaeaea;
   margin-bottom: 0.3rem;
 }
 
 .user-email {
-  color: #888;
+  color: #bbbbbb;
   font-size: 0.95rem;
   margin-bottom: 1.5rem;
 }
@@ -120,37 +120,42 @@ defineEmits(['view-profile', 'follow', 'unfollow']);
   gap: 0.8rem;
 }
 
-/* Style original du bouton "Voir le profil" */
+/* Bouton "Voir le profil" */
 .connect-btn {
   width: 100%;
   padding: 0.9rem;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(45deg, #FF9A9E, #FAD0C4);
+  background: linear-gradient(45deg, #7f60f9,rgb(22, 26, 230));
   color: white;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
-  box-shadow: 0 5px 15px rgba(255,154,158,0.3);
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(127, 96, 249, 0.3);
 }
 
 .connect-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(255,154,158,0.4);
+  box-shadow: 0 10px 25px rgba(127, 96, 249, 0.5);
 }
 
-/* Nouveaux styles uniquement pour les boutons de suivi */
+/* Boutons Suivre / Suivi */
 .follow-btn {
   width: 100%;
   padding: 0.9rem;
   border: none;
   border-radius: 12px;
-  background: #42b983;
+  background:rgb(78, 100, 224);
   color: white;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
-  box-shadow: 0 5px 15px rgba(66,185,131,0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(37, 111, 196, 0.3);
+}
+
+.follow-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(53, 100, 187, 0.5);
 }
 
 .unfollow-btn {
@@ -158,21 +163,18 @@ defineEmits(['view-profile', 'follow', 'unfollow']);
   padding: 0.9rem;
   border: none;
   border-radius: 12px;
-  background: #888;
+  background: #444;
   color: white;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
-  box-shadow: 0 5px 15px rgba(136,136,136,0.3);
-}
-
-.follow-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(66,185,131,0.4);
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
 }
 
 .unfollow-btn:hover {
+  background-color: #666;
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(136,136,136,0.4);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
 }
+
 </style>

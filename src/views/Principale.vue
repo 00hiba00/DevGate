@@ -61,7 +61,7 @@
 
     <!-- NEW FOLLOW SECTION ADDED AT THE BOTTOM -->
     <div class="connections-section">
-      <h2>Réseau</h2>
+      <h2 >Réseau</h2>
       <div class="connections-container">
         <div class="connections-column">
           <h3>Abonnements</h3>
@@ -358,4 +358,18 @@ justify-content: center;
 align-items: center;
 z-index: 1000;
 }
+
+h2, h3 {
+  
+  color:rgb(82, 80, 182);
+  background-color: #000;
+  padding: 0.5rem 1rem;
+  border: 2px solidrgb(17, 49, 136);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5pxrgb(60, 70, 204);
+  margin-bottom: 1rem;
+}
+
+
 </style>

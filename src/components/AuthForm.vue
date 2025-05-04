@@ -146,7 +146,7 @@ const reset = async () => {
 .auth-page > div:first-of-type::before {
   content: "Votre portail vers le développement";
   position: fixed;
-  top: calc(50% + 60px); /* Placer la tagline plus bas que le logo */
+  top: calc(-100% + 60px); /* Placer la tagline plus bas que le logo */
   left: -120%;
   transform: translateX(-50%);
   font-size: 1.2rem;

@@ -1,5 +1,10 @@
 <template>
     <div class="profile-container" v-if="user">
+    <div class="avatar-wrapper">
+  <img v-if="user.photoURL" :src="user.photoURL" alt="Photo de profil" class="profile-avatar" />
+  <div v-else class="default-avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+</div>
+
       <h2>Profil de {{ user.name }}</h2>
       <div class="user-info">
         <p><strong>Email :</strong> {{ user.email }}</p>
@@ -44,6 +49,8 @@
     <div v-else class="loading">
       Chargement du profil...
     </div>
+    <button @click="$router.back()" class="back-btn">← Retour</button>
+
   </template>
   
   <script setup>
@@ -152,5 +159,28 @@ const fetchCompetences = async () => {
     text-align: center;
     margin-top: 5rem;
   }
+  .profile-avatar, .default-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: linear-gradient(45deg, #FF9A9E, #FAD0C4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+.back-btn {
+  background: none;
+  border: none;
+  color: #42b983;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
   </style>
   
