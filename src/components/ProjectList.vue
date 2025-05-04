@@ -12,9 +12,9 @@
       <a :href="project.github" target="_blank" class="text-blue-500 underline">
         Voir sur GitHub
       </a>
-      <div class="mt-3 flex gap-2">
+      <div class="action-buttons">
         <button @click="editProject(project)">Modifier</button>
-        <button @click="$emit('delete', project)">Supprimer</button>
+        <button @click="confirmDelete(project)">Supprimer</button>
         <button @click="toggleTimer(project)">
           {{ activeProjectId === project.id ? 'Stop Timer' : 'Start Timer' }}
         </button>
@@ -53,15 +53,17 @@ const chartOptions = ref({
     enabled: false
   },
   xaxis: {
-    type: 'category'
+    type: 'category',
+    
   },
+ 
   plotOptions: {
     heatmap: {
       shadeIntensity: 0.5,
       colorScale: {
         ranges: [
         { from: 0, to: 0, name: 'Aucune activité', color: '#e0e0e0' },  // Light gray for 0
-        { from: 1, to: 59, name: '< 1h', color: '#d4f4fa' },
+        { from: 1, to: 59, name: '< 1h', color: '#8cc6d1' },
         { from: 60, to: 239, name: '1–4h', color: '#4db6ac' },
         { from: 240, to: 1440, name: '4h+', color: '#00796b' }
         ]
@@ -131,7 +133,7 @@ const fetchSessions = async () => {
 
       rawData[project.id] = data
     }
-
+    
     // Collect all unique dates across all projects
     const allDatesSet = new Set()
     Object.values(rawData).forEach(dataMap => {
@@ -160,6 +162,12 @@ const fetchSessions = async () => {
     chartData.value = grouped
   } catch (error) {
     console.error("Error fetching sessions:", error)
+  }
+}
+
+const confirmDelete = (project) => {
+  if (confirm(`Es-tu sûr de vouloir supprimer le projet "${project.title}" ?`)) {
+    emit('delete', project)
   }
 }
 
@@ -206,62 +214,6 @@ const toggleTimer = async (project) => {
 }
 </script>
 
-<style scoped>
-.project-card {
-  background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
-  transition: transform 0.2s ease;
-  margin-bottom: 1.5rem;
-}
-
-.project-card:hover {
-  transform: translateY(-5px);
-}
-
-.project-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.visibility-badge {
-  padding: 0.3rem 0.6rem;
-  border-radius: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-}
-
-.visibility-badge.public {
-  background-color: #42b983;
-  color: white;
-}
-
-.visibility-badge.private {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.project-card button {
-  margin-right: 0.5rem;
-  border-radius: 0.5rem;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  background-color: #42b983;
-  color: white;
-  transition: background-color 0.2s;
-}
-
-.project-card button:hover {
-  background-color: #36976f;
-}
-
-.project-card button:last-child {
-  margin-right: 0;
-}
+<style>
+@import '../assets/styles/projectlist.css';
 </style>
