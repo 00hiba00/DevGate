@@ -22,6 +22,9 @@ const routes = [
     name: 'MyProfile',
     component: () => import('../components/MyProfile.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: "/Activite", component: Timeline
   }
   
 ]
