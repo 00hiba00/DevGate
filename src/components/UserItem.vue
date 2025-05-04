@@ -1,92 +1,178 @@
 <template>
-    <b-card class="user-card">
-      <b-card-header>
-        <h5>{{ user.name }}</h5>
-      </b-card-header>
-      <b-card-body>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <span class="status-indicator" :class="{ online: user.status, offline: !user.status }"></span>
-        <b-button @click="viewProfile" variant="outline-primary">View Profile</b-button>
-      </b-card-body>
-    </b-card>
+  <div class="user-card">
+    <div class="user-avatar">
+      {{ user.name.charAt(0).toUpperCase() }}
+    </div>
+    
+    <div class="user-info">
+      <h3 class="user-name">{{ user.name }}</h3>
+      <p class="user-email">{{ user.email }}</p>
+    </div>
+    
+    <div class="user-actions">
+      <!-- Bouton original "Voir le profil" - Fonctionnel -->
+      <button 
+        class="connect-btn"
+        @click="$emit('view-profile', user)"
+      >
+        Voir le profil
+      </button>
+      
+      <!-- Nouveaux boutons de suivi ajoutés en dessous -->
+      <button 
+        v-if="!isFollowing"
+        @click.stop="$emit('follow', user.id)"
+        class="follow-btn"
+      >
+        Suivre
+      </button>
+      <button 
+        v-else
+        @click.stop="$emit('unfollow', user.id)"
+        class="unfollow-btn"
+      >
+        Suivi
+      </button>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-
-const props = defineProps({
-  user: Object // Assure-toi que l'utilisateur a bien un `id` (user.id) que tu passes
-})
-
-const router = useRouter()
-
-const viewProfile = () => {
-  // Vérifie si `user.id` existe avant de naviguer
-  if (props.user && props.user.id) {
-    router.push({ name: 'Profile', params: { userId: props.user.id } })
-  } else {
-    console.error("L'ID de l'utilisateur est manquant !");
+defineProps({
+  user: {
+    type: Object,
+    required: true
+  },
+  isFollowing: {
+    type: Boolean,
+    default: false
   }
-}
+});
 
+defineEmits(['view-profile', 'follow', 'unfollow']);
 </script>
+
 <style scoped>
+/* Tous vos styles originaux préservés */
 .user-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  background-color: #fff;
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+  transition: all 0.6s cubic-bezier(0.25,0.8,0.25,1);
+  position: relative;
 }
 
 .user-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-  background-color: #f9f9fb;
+  transform: translateY(-8px);
+  box-shadow: 
+    0 25px 50px rgba(0,0,0,0.1),
+    0 0 0 1px rgba(255,154,158,0.2);
 }
 
-.b-card-header {
-  background-color: #f1f3f5;
-  border-bottom: 2px solid #e9ecef;
-  padding: 1rem;
-  border-radius: 10px 10px 0 0;
+.user-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, #FF9A9E, #FAD0C4);
 }
 
-.b-card-header h5 {
-  margin: 0;
-  color: #333;
-  font-size: 1.2rem;
-}
-
-.b-button {
-  margin-top: 1rem;
-  padding: 0.6rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 600;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.b-button:hover {
-  background-color: #0069d9;
-  transform: scale(1.05);
-}
-
-.status-indicator {
-  width: 12px;
-  height: 12px;
+.user-avatar {
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  display: inline-block;
-  margin-left: 12px;
+  margin: 2.5rem auto 1.5rem;
+  background: linear-gradient(45deg, #FF9A9E, #FAD0C4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  box-shadow: 0 10px 20px rgba(255,154,158,0.3);
 }
 
-.status-indicator.online {
-  background-color: #28a745;
+.user-info {
+  padding: 0 2rem 2rem;
+  text-align: center;
 }
 
-.status-indicator.offline {
-  background-color: #dc3545;
+.user-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.3rem;
+}
+
+.user-email {
+  color: #888;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-actions {
+  padding: 0 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Style original du bouton "Voir le profil" */
+.connect-btn {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg, #FF9A9E, #FAD0C4);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+  box-shadow: 0 5px 15px rgba(255,154,158,0.3);
+}
+
+.connect-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255,154,158,0.4);
+}
+
+/* Nouveaux styles uniquement pour les boutons de suivi */
+.follow-btn {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 12px;
+  background: #42b983;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+  box-shadow: 0 5px 15px rgba(66,185,131,0.3);
+}
+
+.unfollow-btn {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 12px;
+  background: #888;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+  box-shadow: 0 5px 15px rgba(136,136,136,0.3);
+}
+
+.follow-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(66,185,131,0.4);
+}
+
+.unfollow-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(136,136,136,0.4);
 }
 </style>
