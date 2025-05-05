@@ -149,98 +149,121 @@
   </script>
   
   <style scoped>
-  .profile-container {
+  /* Profile Container */
+.profile-container {
   max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #1a1a1d; /* fond sombre */
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(98, 0, 234, 0.2);
-  color: #f1f1f1;
+  background-color: #1f1f2f;
+  color: #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(102, 51, 153, 0.3);
+}
+
+/* Header */
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .profile-header h2 {
   font-size: 2rem;
-  color: #7f60f9;
-  margin-bottom: 2rem;
-  text-align: center;
+  color: #b084f6;
+  font-weight: bold;
 }
 
+/* Profile Content */
 .profile-content {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 2rem;
-  justify-content: center;
+  align-items: center;
 }
 
+/* Avatar Section */
 .avatar-section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+  text-align: center;
 }
 
 .avatar-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
+  gap: 0.75rem;
 }
 
 .profile-avatar,
 .default-avatar {
-  width: 160px;
-  height: 160px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   object-fit: cover;
-  background: linear-gradient(135deg, #9b5de5, #f15bb5);
+  border: 3px solid #b084f6;
+  background-color: #2a2a3d;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   font-size: 3rem;
+  color: #ccc;
   font-weight: bold;
-  box-shadow: 0 0 15px rgba(241, 91, 181, 0.5);
 }
 
 .upload-btn {
-  padding: 0.6rem 1.4rem;
-  background-color: #7f60f9;
+  padding: 0.4rem 1rem;
+  background-color: #6a4fcf;
+  color: #fff;
   border: none;
-  border-radius: 12px;
-  color: white;
-  font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .upload-btn:hover {
-  background-color: #a084f9;
+  background-color: #7f5ff5;
 }
 
+/* Profile Details */
 .profile-details {
-  flex: 2;
+  width: 100%;
+  max-width: 500px;
+  background-color: #2a2a3d;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(176, 132, 246, 0.1);
 }
 
 .detail-item {
-  margin-bottom: 1.8rem;
+  margin-bottom: 1rem;
 }
 
 .detail-item label {
   display: block;
-  margin-bottom: 0.5rem;
-  color: #cfcfcf;
   font-weight: 600;
-  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  color: #b084f6;
 }
 
 .detail-item p {
-  padding: 0.9rem;
-  background: #2d2d32;
-  border-radius: 10px;
-  color: #e4e4e4;
-  font-size: 1.1rem;
-  word-break: break-word;
-  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.05);
+  margin: 0;
+  font-size: 1rem;
+  color: #ddd;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .profile-content {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .avatar-section {
+    flex: 1;
+  }
+
+  .profile-details {
+    flex: 2;
+  }
 }
 
   </style>
