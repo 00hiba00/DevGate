@@ -63,134 +63,111 @@ defineEmits(['view-profile', 'follow', 'unfollow']);
 </script>
 
 <style scoped>
-/* Tous vos styles originaux préservés */
+/* Container for each user card */
 .user-card {
-  background: white;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-  transition: all 0.6s cubic-bezier(0.25,0.8,0.25,1);
-  position: relative;
-}
-
-.user-card:hover {
-  transform: translateY(-8px);
-  box-shadow:
-    0 25px 50px rgba(0,0,0,0.1),
-    0 0 0 1px rgba(255,154,158,0.2);
-}
-
-.user-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 8px;
-  background: linear-gradient(90deg, #FF9A9E, #FAD0C4);
+  max-width: 400px;
+  margin: 0 auto 1rem;
+  padding: 1.2rem;
+  background-color: var(--card-background, #1f1f2e);
+  color: var(--text-color, #e0e0e0);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
+/* Avatar */
 .user-avatar {
-  width: 100px;
-  height: 100px;
+  background-color: #5e4b8b;
+  color: white;
+  width: 64px;
+  height: 64px;
+  font-size: 1.5rem;
+  font-weight: 700;
   border-radius: 50%;
-  margin: 2.5rem auto 1.5rem;
-  background: linear-gradient(45deg, #FF9A9E, #FAD0C4);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 2.5rem;
-  font-weight: bold;
-  box-shadow: 0 10px 20px rgba(255,154,158,0.3);
-}
-
-.user-info {
-  padding: 0 2rem 2rem;
-  text-align: center;
+  overflow: hidden;
+  margin-bottom: 0.8rem;
 }
 
 .avatar-image {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
+  border-radius: 50%;
 }
 
+/* User information */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
 .user-name {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.3rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #b3a0ff;
+  margin: 0;
 }
 
 .user-email {
-  color: #888;
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: #cccccc;
+  margin: 0.3rem 0 0;
 }
 
+/* Action buttons */
 .user-actions {
-  padding: 0 1.5rem 1.5rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-/* Style original du bouton "Voir le profil" */
-.connect-btn {
-  width: 100%;
-  padding: 0.9rem;
+/* Shared button styles */
+.user-actions button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
   border: none;
-  border-radius: 12px;
-  background: linear-gradient(45deg, #FF9A9E, #FAD0C4);
-  color: white;
-  font-weight: 500;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
-  box-shadow: 0 5px 15px rgba(255,154,158,0.3);
+  transition: background-color 0.3s ease;
+  color: white;
+}
+
+/* View Profile Button */
+.connect-btn {
+  background-color: #5e4b8b;
 }
 
 .connect-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(255,154,158,0.4);
+  background-color: #453375;
 }
 
-/* Nouveaux styles uniquement pour les boutons de suivi */
+/* Follow Button */
 .follow-btn {
-  width: 100%;
-  padding: 0.9rem;
-  border: none;
-  border-radius: 12px;
-  background: #42b983;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
-  box-shadow: 0 5px 15px rgba(66,185,131,0.3);
-}
-
-.unfollow-btn {
-  width: 100%;
-  padding: 0.9rem;
-  border: none;
-  border-radius: 12px;
-  background: #888;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
-  box-shadow: 0 5px 15px rgba(136,136,136,0.3);
+  background-color: #8a8eff;
 }
 
 .follow-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(66,185,131,0.4);
+  background-color: #6c6fff;
+}
+
+/* Unfollow Button */
+.unfollow-btn {
+  background-color: #c90076;
 }
 
 .unfollow-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(136,136,136,0.4);
+  background-color: #a0005f;
 }
+
 </style>
